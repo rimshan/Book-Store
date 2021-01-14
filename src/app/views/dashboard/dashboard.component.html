@@ -1,0 +1,269 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          Books
+          <button
+            type="button"
+            class="pull-right btn btn-primary"
+            (click)="onAddNewButtonClick()"
+          >
+            Add New
+          </button>
+        </div>
+        <div class="card-body">
+          <br />
+          <table
+            datatable
+            [dtOptions]="dtOptions"
+            [dtTrigger]="dtTrigger"
+            class="table table-sm table-striped table-bordered"
+          >
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let book of books">
+                <td>{{ book.title }}</td>
+                <td>{{ book.description }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-block btn-ghost-primary btn-sm"
+                    (click)="onEditButtonClick(book)"
+                  >
+                    Edit
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div
+            bsModal
+            #addBookModal="bs-modal"
+            class="modal fade"
+            tabindex="-1"
+            (onHide)="onHideModal()"
+            role="dialog"
+            aria-labelledby="myModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-info modal-lg" role="document">
+              <div class="modal-content">
+                <form
+                  class="form-horizontal"
+                  [formGroup]="addBookForm"
+                  (ngSubmit)="onSubmit()"
+                >
+                  <div class="modal-header">
+                    <h4 class="modal-title">Add New Book</h4>
+                    <button
+                      type="button"
+                      class="close"
+                      (click)="addBookModal.hide()"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="card-body">
+                      <div class="form-group row">
+                        <label
+                          class="col-md-3 col-form-label"
+                          for="title"
+                          required
+                          >Book Title</label
+                        >
+                        <div class="col-md-9">
+                          <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            formControlName="title"
+                            [ngClass]="{
+                              'is-invalid': submitted && f.title.errors
+                            }"
+                            class="form-control"
+                            placeholder="Enter Book Title.."
+                            autocomplete="title"
+                          />
+                          <div
+                            *ngIf="submitted && f.title.errors"
+                            class="invalid-feedback"
+                          >
+                            <div *ngIf="f.title.errors.required">
+                              Title is required
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="description"
+                          >Description</label
+                        >
+                        <div class="col-md-9">
+                          <input
+                            type="text"
+                            id="description"
+                            name="description"
+                            formControlName="description"
+                            [ngClass]="{
+                              'is-invalid': submitted && f.description.errors
+                            }"
+                            class="form-control"
+                            placeholder="Enter Description.."
+                            autocomplete="description"
+                          />
+                          <div
+                            *ngIf="submitted && f.description.errors"
+                            class="invalid-feedback"
+                          >
+                            <div *ngIf="f.description.errors.required">
+                              Description is required
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      (click)="addBookModal.hide()"
+                    >
+                      Close
+                    </button>
+                    <button type="button" class="btn btn-info" type="submit">
+                      Save changes
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+          <!-- /.modal -->
+
+          <div
+            bsModal
+            #editBookModal="bs-modal"
+            class="modal fade"
+            tabindex="-1"
+            (onHide)="onHideModal()"
+            role="dialog"
+            aria-labelledby="myModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-info modal-lg" role="document">
+              <div class="modal-content">
+                <form
+                  class="form-horizontal"
+                  [formGroup]="editBookForm"
+                  (ngSubmit)="onEditSubmit()"
+                >
+                  <div class="modal-header">
+                    <h4 class="modal-title">Edit Book</h4>
+                    <button
+                      type="button"
+                      class="close"
+                      (click)="editBookModal.hide()"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="card-body">
+                      <div class="form-group row">
+                        <label
+                          class="col-md-3 col-form-label"
+                          for="title"
+                          required
+                          >Book Title</label
+                        >
+                        <div class="col-md-9">
+                          <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            formControlName="title"
+                            [ngClass]="{
+                              'is-invalid': submitted && e.title.errors
+                            }"
+                            class="form-control"
+                            placeholder="Enter Book Title.."
+                            autocomplete="title"
+                          />
+                          <div
+                            *ngIf="submitted && e.title.errors"
+                            class="invalid-feedback"
+                          >
+                            <div *ngIf="e.title.errors.required">
+                              Title is required
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="description"
+                          >Description</label
+                        >
+                        <div class="col-md-9">
+                          <input
+                            type="text"
+                            id="description"
+                            name="description"
+                            formControlName="description"
+                            [ngClass]="{
+                              'is-invalid': submitted && e.description.errors
+                            }"
+                            class="form-control"
+                            placeholder="Enter Description.."
+                            autocomplete="description"
+                          />
+                          <div
+                            *ngIf="submitted && e.description.errors"
+                            class="invalid-feedback"
+                          >
+                            <div *ngIf="e.description.errors.required">
+                              Description is required
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      (click)="editBookModal.hide()"
+                    >
+                      Close
+                    </button>
+                    <button type="button" class="btn btn-info" type="submit">
+                      Save changes
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+          <!-- /.modal -->
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>
